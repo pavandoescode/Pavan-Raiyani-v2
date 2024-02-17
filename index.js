@@ -2,12 +2,9 @@ const express = require("express")
 const app = express();
 
 
-app.set("view engine", "ejs")
-app.use(express.static("public"))  
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+app.set("view engine","ejs")
+app.use(express.static("public"))
+
 
 
 app.get("/",(req, res)=>{
