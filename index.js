@@ -1,61 +1,40 @@
-const express = require("express")
+const express = require("express");
+const path = require("path");
+
 const app = express();
 
+// Set up view engine and static files directory
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
-app.set("view engine","ejs")
-app.use(express.static("public"))
+// Define routes
+const routes = [
+    { path: "/", view: "index" },
+    { path: "/contact", view: "contact" },
+    { path: "/AI-Image-Generator", view: "AI-Image-Generator" },
+    { path: "/Chat-App_-Socket-IO", view: "Chat-App_-Socket-IO" },
+    { path: "/URLShortenerAPI", view: "URLShortenerAPI" },
+    { path: "/Note-Master", view: "Note-Master" },
+    { path: "/Sticky-Notes", view: "Sticky-Notes" },
+    { path: "/Live-ISS-Tracker", view: "Live-ISS-Tracker" },
+    { path: "/Weather-API", view: "Weather-API" }
+];
 
+// Register routes
+routes.forEach(route => {
+    app.get(route.path, (req, res) => {
+        res.render(route.view);
+    });
+});
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Something went wrong!");
+});
 
-app.get("/",(req, res)=>{
-    res.render("index")
-})
-
-
-app.get("/contact",(req, res)=>{
-    res.render("contact")
-})
-
-
-app.get("/AI-Image-Generator",(req, res)=>{
-    res.render("AI-Image-Generator")
-})
-
-
-app.get("/Chat-App_-Socket-IO",(req, res)=>{
-    res.render("Chat-App_-Socket-IO")
-})
-
-
-app.get("/URLShortenerAPI",(req, res)=>{
-    res.render("URLShortenerAPI")
-})
-
-
-app.get("/Note-Master",(req, res)=>{
-    res.render("Note-Master")
-})
-
-
-app.get("/Sticky-Notes",(req, res)=>{
-    res.render("Sticky-Notes")
-})
-
-
-app.get("/Live-ISS-Tracker",(req, res)=>{
-    res.render("Live-ISS-Tracker")
-})
-
-
-app.get("/Weather-API",(req, res)=>{
-    res.render("Weather-API")
-})
-
-
-
-app.listen(8080,()=>{
-    console.log("server is running")
-})
-
-
-
+// Start the server
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
